@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 7</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    h2 {
+      color: #0066c0;
+    }
+  </style>
+  <link rel="stylesheet" href="prism-tricks.css">
+  <script src="prism.js" defer></script>
+</head>
+
+<body>
+  <main>
+    <header>
+      <h1>OOP and Classes</h1>
+    </header>
+
+    <section class="section">
+      <h2>Overview</h2>
+      <div style="display: flex; align-items: center; gap: 1em;">
+        <span>Deep Dive Conversation</span>
+        <audio controls src="../audio/u2-w15-lb2-deep-dive-conversation.mp3"></audio>
+      </div>
+      <p>In this lesson, we'll be refactoring our project to use object-oriented programming (OOP) principles. We'll
+        introduce new classes, update our existing code, and improve the overall structure of our project. These changes
+        will make our code more modular, easier to maintain, and more scalable.</p>
+    </section>
+
+    <section class="section">
+      <h2>Object-Oriented Programming</h2>
+      <p>OOP is a programming paradigm. We use OOP for several reasons:</p>
+      <ul>
+        <li>It helps to organise and structure code, making it more manageable and easier to understand.</li>
+        <li>It promotes code reusability through inheritance and modularity.</li>
+        <li>It allows for better data hiding and encapsulation, improving security and reducing complexity.</li>
+        <li>It facilitates easier maintenance and scalability of software projects.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Classes</h2>
+      <p>A class in JavaScript is a blueprint for creating objects. It encapsulates data and functions that manipulate
+        that data. Classes were introduced in ECMAScript 2015 (ES6) and provide a much clearer and simpler syntax to
+        create objects and implement inheritance.</p>
+    </section>
+
+    <section class="section">
+      <h2>Constructors</h2>
+      <p>The constructor is a special method in a class that is automatically called when a new instance of the class is
+        created. It's used to initialise the object's properties and set up any necessary initial state.</p>
+    </section>
+
+    <section class="section">
+      <h2>Private properties and methods</h2>
+      <p>Private properties and methods in JavaScript classes are denoted by the <code>#</code> symbol. They can only be
+        accessed or modified from within the class itself, not from outside the class or in child classes. This helps in
+        achieving better encapsulation.</p>
+    </section>
+
+    <section class="section">
+      <h2>New File: cart-class.js</h2>
+      <p>Create a new file called <code>cart-class.js</code> in <code>data</code> folder, which introduces a
+        <code>Cart</code> class. This class encapsulates all the functionality related to the shopping cart. Copy all
+        the code from <code>cart.js</code>; then, update it to the following:
+      </p>
+      <pre style="user-select: none"><code class="language-js">class Cart {
+  cartItems
+  #sessionStorageKey
+
+  constructor(sessionStorageKey) {
+    this.#sessionStorageKey = sessionStorageKey
+    this.#loadFromStorage()
+  }
+
+  #loadFromStorage() {
+    this.cartItems = JSON.parse(sessionStorage.getItem(this.#sessionStorageKey)) || [
+      {
+        productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 2,
+        deliveryOptionId: '1'
+      },
+      {
+        productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+        deliveryOptionId: '2'
+      }
+    ]
+  }
+
+  saveToStorage() {
+    sessionStorage.setItem(this.#sessionStorageKey, JSON.stringify(this.cartItems))
+  }
+
+  addToCart(productId) {
+    let matchingItem
+
+    this.cartItems.forEach(cartItem => {
+      if (productId === cartItem.productId) {
+        matchingItem = cartItem
+      }
+    })
+
+    if (matchingItem) {
+      matchingItem.quantity += 1
+    } else {
+      this.cartItems.push({
+        productId,
+        quantity: 1,
+        deliveryOptionId: '1'
+      })
+    }
+
+    this.saveToStorage()
+  }
+
+  removeFromCart(productId) {
+    const newCart = []
+
+    this.cartItems.forEach(cartItem => {
+      if (cartItem.productId !== productId) {
+        newCart.push(cartItem)
+      }
+    })
+
+    this.cartItems = newCart
+
+    this.saveToStorage()
+  }
+
+  updateDeliveryOption(productId, deliveryOptionId) {
+    let matchingItem
+
+    this.cartItems.forEach(cartItem => {
+      if (productId === cartItem.productId) {
+        matchingItem = cartItem
+      }
+    })
+
+    matchingItem.deliveryOptionId = deliveryOptionId
+
+    this.saveToStorage()
+  }
+}
+
+const cart = new Cart('cart-class')
+const businessCart = new Cart('cart-business')</code></pre>
+      <h4>Key points to note:</h4>
+      <ul>
+        <li>We've created a <code>Cart</code> class that encapsulates all cart-related functionality.</li>
+        <li>The class uses a private property <code>#sessionStorageKey</code> to store the key used for session storage.
+        </li>
+        <li>The <code>#loadFromStorage()</code> method is private (denoted by the # symbol) and is called in the
+          constructor to initialise the <code>cartItems</code>.</li>
+        <li>We've moved the <code>addToCart</code>, <code>removeFromCart</code>, and <code>updateDeliveryOption</code>
+          into this class.</li>
+        <li>The <code>saveToStorage()</code> function is now a method of the class, called after any cart modifications.
+        </li>
+        <li>We've created two instances of the <code>Cart</code> class, demonstrating how we can now easily create
+          multiple carts if needed.</li>
+      </ul>
+
+      <div class="note">
+        <p>In classes, <code>this</code> refers to the instance of the class. It allows access to the object's
+          properties and methods within the class definition.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Inheritance</h2>
+      <p>Inheritance is a fundamental concept in OOP where a new class is based on an existing class. The new class
+        (child or derived class) inherits properties and methods from the existing class (parent or base class). In
+        JavaScript, we use the <code>extends</code> keyword to create a child class.</p>
+    </section>
+
+    <section class="section">
+      <h2>Method overriding</h2>
+      <p>Method overriding occurs when a child class provides a specific implementation for a method that is already
+        defined in its parent class. This allows the child class to provide its own unique behaviour for that method.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Changes in products.js</h2>
+      <p>Create two new classes, <code>Product</code> and <code>Clothing</code> in <code>product.js</code>.</p>
+      <pre style="user-select: none"><code class="language-js">import { formatCurrency } from '../scripts/utils/money.js'
+
+export function getProduct(productId) {
+  let matchingProduct
+
+  products.forEach(product => {
+    if (product.id === productId) {
+      matchingProduct = product
+    }
+  })
+
+  return matchingProduct
+}
+
+class Product {
+  id
+  image
+  name
+  rating
+  priceCents
+
+  constructor(productDetails) {
+    this.id = productDetails.id
+    this.image = productDetails.image
+    this.name = productDetails.name
+    this.rating = productDetails.rating
+    this.priceCents = productDetails.priceCents
+  }
+
+  getStarsUrl() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`
+  }
+
+  getPrice() {
+    return `$${formatCurrency(this.priceCents)}`
+  }
+
+  extraInfoHTML() {
+    return ''
+  }
+}
+
+class Clothing extends Product {
+  sizeChartLink
+
+  constructor(productDetails) {
+    super(productDetails)
+    this.sizeChartLink = productDetails.sizeChartLink
+  }
+
+  extraInfoHTML() {
+    return `
+      &lt;a href="${this.sizeChartLink}" target="_blank"&gt;Size chart&lt;/a&gt;
+    `
+  }
+}
+
+export const products = [
+  {
+    id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+    image: "images/products/athletic-cotton-socks-6-pairs.jpg",
+    name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
+    rating: {
+      stars: 4.5,
+      count: 87
+    },
+    priceCents: 1090,
+    keywords: [
+      "socks",
+      "sports",
+      "apparel"
+    ]
+  },
+  {
+    id: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+    image: "images/products/intermediate-composite-basketball.jpg",
+    name: "Intermediate Size Basketball",
+    rating: {
+      stars: 4,
+      count: 127
+    },
+    priceCents: 2095,
+    keywords: [
+      "sports",
+      "basketballs"
+    ]
+  },
+  {
+    id: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
+    image: "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
+    name: "Adults Plain Cotton T-Shirt - 2 Pack",
+    rating: {
+      stars: 4.5,
+      count: 56
+    },
+    priceCents: 799,
+    keywords: [
+      "tshirts",
+      "apparel",
+      "mens"
+    ],
+    type: "clothing",
+    sizeChartLink: "images/clothing-size-chart.png"
+  },
+  // ... (rest of the products)
+].map(productDetails => {
+  if (productDetails.type === "clothing") {
+    return new Clothing(productDetails)
+  }
+  return new Product(productDetails)
+})</code></pre>
+      <h4>Key changes and concepts:</h4>
+      <ul>
+        <li>We've introduced a base <code>Product</code> class that contains common properties and methods for all
+          products.</li>
+        <li>The <code>Product</code> class includes methods like <code>getStarsUrl()</code> and <code>getPrice()</code>
+          which encapsulate the logic for generating the star rating image URL and formatting the price.</li>
+        <li>We've created a <code>Clothing</code> class that extends <code>Product</code>, demonstrating inheritance in
+          JavaScript.</li>
+        <li>The <code>Clothing</code> class adds a <code>sizeChartLink</code> property and overrides the
+          <code>extraInfoHTML()</code> method to include a link to the size chart.
+        </li>
+        <li>We're now mapping over the product data to create instances of either <code>Product</code> or
+          <code>Clothing</code> based on the product type.
+        </li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Polymorphism</h2>
+      <p>Polymorphism allows objects of different classes to be treated as objects of a common base class. In our
+        example, both <code>Product</code> and <code>Clothing</code> objects can be treated as <code>Product</code>
+        objects, but they may behave differently when certain methods are called.</p>
+    </section>
+
+    <section class="section">
+      <h2>Discriminator Property</h2>
+      <p>A discriminator property is a field used to differentiate between different types of objects that share a
+        common base class. In our example, the <code>type</code> property in the product data acts as a discriminator,
+        allowing us to create either a <code>Product</code> or <code>Clothing</code> instance.</p>
+    </section>
+
+    <section class="section">
+      <h2>Updates in amazon.js</h2>
+      <p>Make some updates to <code>amazon.js</code> to work with our new class-based structure:</p>
+      <pre style="user-select: none"><code class="language-js">import { cart, addToCart } from '../data/cart.js'
+import { products } from '../data/products.js'
+
+let productsHTML = ''
+
+products.forEach(product => {
+
+  productsHTML += `
+    &lt;div class="product-container"&gt;
+      &lt;div class="product-image-container"&gt;
+        &lt;img class="product-image" src="${product.image}"&gt;
+      &lt;/div&gt;
+
+      &lt;div class="product-name limit-text-to-2-lines"&gt;
+        ${product.name}
+      &lt;/div&gt;
+
+      &lt;div class="product-rating-container"&gt;
+        &lt;img class="product-rating-stars" src="${product.getStarsUrl()}"&gt;
+        &lt;div class="product-rating-count link-primary"&gt;
+          ${product.rating.count}
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class="product-price"&gt;
+        ${product.getPrice()}
+      &lt;/div&gt;
+
+      &lt;div class="product-quantity-container"&gt;
+        &lt;select&gt;
+          &lt;option selected value="1"&gt;1&lt;/option&gt;
+          &lt;option value="2"&gt;2&lt;/option&gt;
+          &lt;option value="3"&gt;3&lt;/option&gt;
+          &lt;option value="4"&gt;4&lt;/option&gt;
+          &lt;option value="5"&gt;5&lt;/option&gt;
+          &lt;option value="6"&gt;6&lt;/option&gt;
+          &lt;option value="7"&gt;7&lt;/option&gt;
+          &lt;option value="8"&gt;8&lt;/option&gt;
+          &lt;option value="9"&gt;9&lt;/option&gt;
+          &lt;option value="10"&gt;10&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+
+      ${product.extraInfoHTML()}
+
+      &lt;div class="product-spacer"&gt;&lt;/div&gt;
+
+      &lt;div class="added-to-cart"&gt;
+        &lt;img src="images/icons/checkmark.png"&gt;
+        Added
+      &lt;/div&gt;
+
+      &lt;button class="add-to-cart-button button-primary js-add-to-cart"
+       data-product-id="${product.id}"&gt;Add to Cart&lt;/button&gt;
+    &lt;/div&gt;
+  `
+})
+
+document.querySelector('.js-products-grid').innerHTML = productsHTML
+
+function updateCartQuantity() {
+  let cartQuantity = 0
+
+  cart.forEach(cartItem => {
+    cartQuantity += cartItem.quantity
+  })
+
+  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity
+}
+
+document.querySelectorAll('.js-add-to-cart').forEach(button => {
+  button.addEventListener('click', () => {
+
+    const productId = button.dataset.productId
+    addToCart(productId)
+    updateCartQuantity()
+  })
+})</code></pre>
+      <h4>Key changes:</h4>
+      <ul>
+        <li>We're now using <code>product.getStarsUrl()</code> instead of constructing the URL manually.</li>
+        <li>We're using <code>product.getPrice()</code> to get the formatted price.</li>
+        <li>We've added <code>${product.extraInfoHTML()}</code> to include any extra product-specific information (like
+          the size chart link for clothing items).</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Change in orderSummary.js</h2>
+      <p>Make the following change in <code>orderSummary.js</code>:</p>
+      <pre><code class="language-js">- $${formatCurrency(matchingProduct.priceCents)}
++ ${matchingProduct.getPrice()}</code></pre>
+      <p>This change reflects our move towards using the <code>getPrice()</code> method of the <code>Product</code>
+        class,
+        which encapsulates the price formatting logic.</p>
+    </section>
+
+    <section class="section">
+      <h2>Conclusion</h2>
+      <p>In this lesson, we've refactored our e-commerce application to use object-oriented programming principles.
+        We've introduced new classes for Cart and Products, which encapsulate related functionality and data. This
+        refactoring brings several benefits:</p>
+      <ul>
+        <li>Improved code organisation: Related functionality is now grouped together in classes.</li>
+        <li>Better encapsulation: Internal details of how things work are hidden inside classes.</li>
+        <li>Easier maintenance: Changes to how products or carts work can be made in one place.</li>
+        <li>Extensibility: We can easily add new types of products (like the Clothing class) without changing existing
+          code.</li>
+      </ul>
+      <p>To update your existing code, you'll need to:</p>
+      <ol>
+        <li>Create the new <code>cart-class.js</code> file with the Cart class.</li>
+        <li>Update <code>products.js</code> to include the new Product and Clothing classes.</li>
+        <li>Modify <code>amazon.js</code> to use the new methods on the product objects.</li>
+        <li>Update <code>orderSummary.js</code> to use the <code>getPrice()</code> method.</li>
+      </ol>
+      <p>Remember to test your application thoroughly after making these changes to ensure everything is working as
+        expected.</p>
+    </section>
+  </main>
+</body>
+
+</html>

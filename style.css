@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Balsamiq Sans", system-ui;
+  scroll-behavior: smooth;
+  interpolate-size: allow-keywords;
+}
+
+body {
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+}
+
+main {
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+button,
+input,
+label {
+  line-height: 1.1;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+figcaption {
+  text-wrap: pretty;
+}
+
+h4,
+h5,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin-bottom: 6px;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: inherit;
+  font-family: inherit;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+img,
+picture,
+iframe {
+  max-width: 100%;
+  display: block;
+}
+
+:target {
+  scroll-margin-block: 5ex;
+}
+
+a {
+  color: #0066c0;
+  text-decoration: none;
+}
+
+a:focus,
+a:hover {
+  text-decoration: underline;
+}
+
+ul,
+ol {
+  padding: 0;
+  margin: 10px 0 10px 25px;
+}
+
+li,
+.quiz-option {
+  margin-top: 5px;
+}
+
+li:has(>pre, >img)+li {
+  margin-top: 16px;
+}
+
+.hyphen li::marker {
+  content: '- ';
+}
+
+header {
+  background-color: #f6f7f6;
+  text-align: center;
+  padding: 1rem;
+  margin-block: 1rem;
+}
+
+code {
+  background-color: #f6f7f6;
+  font-size: .9rem;
+  border-radius: 5px;
+  padding: 2px 4px;
+}
+
+.section {
+  border: 1px solid #f6f7f6;
+  border-radius: 5px;
+  padding: 5px 30px 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0 0 0 /.1);
+}
+
+.question {
+  background-color: #f6f7f6;
+  border-radius: 5px;
+  padding: 1px 20px 10px;
+  margin-bottom: 20px;
+}
+
+.note {
+  width: fit-content;
+  background-color: #fff5e6;
+  border-left: 4px solid #f39c12;
+  padding: 10px;
+  margin-top: 1em;
+
+  & p {
+    margin: 8px;
+  }
+}
+
+.check-btn {
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-block: 5px;
+
+  &:hover {
+    background-color: #ddd;
+  }
+}
+
+.answer-btn {
+  background-color: #3398db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-block: 5px;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+}
+
+.answer {
+  background-color: #eff;
+  border-left: 5px solid #5dd;
+  padding: 10px 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+.feedback {
+  font-weight: bold;
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+}
+
+.blue-box,
+.green-box {
+  width: max-content;
+  flex-shrink: 0;
+  background: #e6f2fb;
+  border-radius: 5px;
+  padding: .3em .6em .2em;
+  margin-block: 6px;
+}
+
+.green-box {
+  background: #bae7b9;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-4 {
+  margin-bottom: 16px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.learningIntentions,
+.successCriteria {
+  background-color: #e5e5e5;
+  outline: 1px solid #c7cdd1;
+  padding-inline: 12px;
+  margin-block: 1em;
+}
+
+.ruler {
+  width: 100%;
+  height: 40px;
+  background-color: #eee;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.ruler-mark {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  background-color: #333;
+}
+
+.ruler-label {
+  position: absolute;
+  bottom: -20px;
+  transform: translateX(-50%);
+  font-size: 12px;
+}
+
+audio,
+canvas,
+video {
+  display: inline-block;
+}
+
+audio:not([controls]) {
+  height: 0;
+  display: none;
+}
+
+/* ::-webkit-scrollbar-thumb:hover {} */
+/* ::-webkit-scrollbar-track-piece {} */
+/* ::-webkit-scrollbar-button {} */
+/* ::-webkit-scrollbar-corner {} */
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(red, blue);
+  border: 2px solid black;
+  border-radius: 100vw;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 100vw;
+  box-shadow: inset 0 0 6px rgba(0 0 0 /.3);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+blockquote {
+  border-left: 5px solid #c7cdd1;
+  padding: 0 0 0 15px;
+  margin: 0 0 20px;
+}
+
+blockquote p {
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 25px;
+  margin-bottom: 0;
+}
+
+sub,
+sup {
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -.5em;
+}
+
+sub {
+  bottom: -.25em;
+}
+
+address {
+  display: block;
+  font-style: normal;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.btn {
+  background: #f5f5f5;
+  color: #2d3b45;
+  line-height: 20px;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: none;
+  vertical-align: middle;
+  border: 1px solid #c7cdd1;
+  border-radius: 3px;
+  padding: 8px 14px;
+  margin-bottom: 0;
+  overflow: hidden;
+  user-select: none;
+  transition: background-color .2s ease-in-out;
+}
+
+.btn:hover {
+  background: #e8e8e8;
+  color: #2d3b45;
+  text-decoration: none;
+}
+
+.btn:focus {
+  color: #2d3b45;
+  text-decoration: none;
+  outline: none;
+  box-shadow: inset 0 0 0 2px #0072c6;
+}
+
+.btn:active {
+  background: #e1e1e1;
+  box-shadow: none;
+}
+
+.btn-secondary-technologies {
+  background-color: #013378;
+  color: #fff;
+  border-color: #212529;
+  padding: .5em;
+  margin: .5em;
+}
+
+.btn-secondary-technologies:hover,
+.btn-secondary-technologies:focus {
+  background-color: #7691b6;
+  color: #fff;
+  border-color: #1a1e21;
+}
+
+.heading-technologies {
+  background-image: url('https://cairnssde.eq.edu.au/SiteCollectionImages/Qlearn%20Course%20Banners/digital-technologies-banner.png');
+  background-size: cover;
+  color: #fff;
+  border-radius: 10px;
+  padding: .1em;
+
+  & h2 {
+    text-shadow: 1px 1px 3px #000;
+  }
+}
+
+.wrc-technologies {
+  border: 1px solid #c7cdd1;
+}
+
+.wrc-technologies:hover {
+  background-color: #d7e7ff;
+  animation: wrcTechnologies .5s;
+}
+
+@keyframes wrcTechnologies {
+  from {
+    background-color: white;
+  }
+
+  to {
+    background-color: #d7e7ff;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row>* {
+  width: 92.5%;
+  flex-shrink: 0;
+}
+
+@media (width >=992px) {
+
+  .col-lg-2,
+  .col-lg-3,
+  .col-lg-4,
+  .col-lg-5 {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+  }
+
+  .col-lg-2 {
+    width: 16.66666667%;
+  }
+
+  .col-lg-3 {
+    width: 25%;
+  }
+
+  .col-lg-4 {
+    width: 33.33333333%;
+  }
+
+  .col-lg-5 {
+    width: 41.66666667%;
+  }
+}
